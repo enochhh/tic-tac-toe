@@ -33,6 +33,7 @@
     width: 15rem;
     height: 15rem;
     border: .5rem solid blue;
+    border-radius:1.2rem;
 }
 
 #game-grid {
@@ -42,6 +43,7 @@
     height: 45rem;
     width: 45rem;
     padding-top: 7rem;
+    gap:.5rem;          
 }
 
 .game-container { 
