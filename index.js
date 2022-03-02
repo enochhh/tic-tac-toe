@@ -1,7 +1,19 @@
 let gameGrid = document.getElementById("game-grid");
-let turn = 1;
+
 const gameBoard = (() => {
     let gameboard = ['','','','','','','','',''];
+    let turn = 1;
+    const displayTurn = (e) => {
+        if (turn % 2 == 1 && e.target.innerHTML=='') {
+            e.target.innerHTML = 'x';
+            turn++;
+        }
+        else if(turn % 2 == 0 && e.target.innerHTML=='') {
+            e.target.innerHTML = 'o';
+            turn++;
+        }
+    }
+
     const createNew = () => {
         for (i = 0; i < 9; i++) {
             const cell = document.createElement('div');
@@ -17,19 +29,8 @@ const gameBoard = (() => {
 
 gameBoard.createNew();
 
-function displayTurn(e) {
-        if (turn % 2 == 1 && e.target.innerHTML=='') {
-            e.target.innerHTML = 'x';
-            turn++;
-        }
-        else if(turn % 2 == 0 && e.target.innerHTML=='') {
-            e.target.innerHTML = 'o';
-            turn++;
-        }
-}
-
 const gameController = (() => {
-
+    
 })();
 
 const Player = (choice) => {
