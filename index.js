@@ -1,56 +1,74 @@
 let gameGrid = document.getElementById("game-grid");
 
-const gameBoard = (() => {
-    let gameArray = ['','','','','','','','',''];
+const Player = (sign) => {
+    this.sign = sign;
+    const getSign = () => {
+        return sign;
+    }
+    return {
+        getSign
+    }
+}
 
-    const winningCombos = [
-        [0,1,2],[3,4,5],[6,7,8], //horizontal
-        [0,3,6],[1,4,7],[2,5,8], //veritcal
-        [0,4,8],[2,4,6]          //diagonal
-    ];
+const gameController = (() => {
+    const playerX = Player('X');
+    const playerO = Player('O');
+    let turn = 0;
+    const winConditions = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
 
-    let turn = 1;
-    let roundWon = false;
+    const getCurrPlayerSign = () => {
+        return turn % 2 === 1 ? playerO.getSign() : playerX.getSign(); 
+    }
 
     const displayTurn = (e) => {
-        if (turn % 2 == 1 && e.target.innerHTML=='') {
-            e.target.innerHTML = 'X';
-            gameArray[e.target.id] = 'X';
-            checkWin(winningCombos, gameArray);
-            turn++;
-        }
-        else if(turn % 2 == 0 && e.target.innerHTML=='') {
-            e.target.innerHTML = 'O';
-            gameArray[e.target.id] = 'O';
-            checkWin(winningCombos, gameArray);
+        if (e.target.innerHTML=='') {
+            e.target.innerHTML = getCurrPlayerSign();
+            fieldIdx = e.target.id; 
+            gameBoard.markField(fieldIdx, getCurrPlayerSign());
+            if (turn < 8) {
+                checkWinner();
+            }
+            else {
+                console.log("it's a draw");
+            }
             turn++;
         }
     }
 
-    const checkWin = (winningCombos, gameArray) => {
-        for(i = 0; i < winningCombos.length; i++) {
-            const winCon = winningCombos[i];
-            let a = gameArray[winCon[0]];
-            let b = gameArray[winCon[1]];
-            let c = gameArray[winCon[2]];
-            if (a === '' || b === '' || c ==='') {
+    const checkWinner = () => {
+        for (i = 0; i < 8; i++) {
+            const winCon = winConditions[i];
+            let a = gameBoard.getField(winCon[0]);
+            let b = gameBoard.getField(winCon[1]);
+            let c = gameBoard.getField(winCon[2]);
+            if (a === '' || b === '' || c === '') {
                 continue;
             }
-
             if (a === b && b === c) {
-                roundWon = true;
-                console.log('Game is won!');
-                break;
+                console.log("GAME WON");
+                break
             }
-        }
-        checkTie(gameArray, roundWon);
-    }
+        }      
+    };
 
-    const checkTie = (gameArray, roundWon) => {
-        if (gameArray.every(element => element != '') && roundWon == false) {
-            console.log('Tied Game!');
-        }
+    return {
+        displayTurn
     }
+})();
+
+
+
+const gameBoard = (() => {
+    let gameArray = ['','','','','','','','',''];
 
     const createNew = () => {
         for (i = 0; i < 9; i++) {
@@ -58,23 +76,26 @@ const gameBoard = (() => {
             cell.classList.add('cell');
             cell.setAttribute('id', i);
             gameGrid.appendChild(cell).className = 'board-item';
-            cell.addEventListener('click', displayTurn); 
+            cell.addEventListener('click', gameController.displayTurn); 
         }
     }
+
+    const markField = (fieldIdx, sign) => {
+        gameArray[fieldIdx] = sign;
+    }
+
+    const getField = (fieldIdx) => {
+        return gameArray[fieldIdx];
+    }
+
     return {
         createNew,
-        gameArray
+        markField,
+        getField,
     }
-})(); 
+})();
 
 
 
 gameBoard.createNew();
 
-const displayController = (() => {
-    
-})();
-
-const Player = (choice) => {
-    
-}
