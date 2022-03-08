@@ -55,9 +55,10 @@ const gameController = (() => {
             }
             if (a === b && b === c) {
                 console.log("GAME WON");
+                setTimeout(gameBoard.reset,5000);    
                 break
             }
-        }      
+        }  
     };
 
     return {
@@ -69,7 +70,7 @@ const gameController = (() => {
 
 const gameBoard = (() => {
     let gameArray = ['','','','','','','','',''];
-
+    
     const createNew = () => {
         for (i = 0; i < 9; i++) {
             const cell = document.createElement('div');
@@ -88,10 +89,24 @@ const gameBoard = (() => {
         return gameArray[fieldIdx];
     }
 
+    const clearBoard = () => {
+        let gridItem = document.querySelectorAll(".board-item");
+        gridItem.forEach(item => {
+            item.innerHTML = '';
+        })
+    }
+
+    const reset = () => {
+        gameArray.fill('');
+        console.log(gameArray);
+        clearBoard();
+    }
+
     return {
         createNew,
         markField,
         getField,
+        reset
     }
 })();
 
