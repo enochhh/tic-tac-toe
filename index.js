@@ -123,27 +123,24 @@ const gameController = (() => {
             e.target.innerHTML = getCurrPlayerSign();
             fieldIdx = e.target.id; 
             gameBoard.markField(fieldIdx, getCurrPlayerSign());
-            if (turn < 8 && !roundWon) {
-                checkWinner();
-                if (roundWon) {
-                    console.log("GAME WON");
-                    roundWon = false; 
-                } 
-            }
-            else if (turn == 8 && !roundWon) {
-                checkWinner();
-                if (roundWon) {
-                    console.log("GAME WON");
-                    roundWon = false; 
-                } 
-                else {
-                    console.log("It's a draw!");
-                    displayController.setDrawMsg();
-                    displayController.openModal();
-                    turn = -1;
-                }
-            }
-            turn++;
+            checkRound(turn);
+        }
+        turn++;
+    }
+
+    const checkRound = (round) => {
+        checkWinner();
+        if (round == 8 && !roundWon) {
+            console.log("It's a draw!");
+                displayController.setDrawMsg();
+                displayController.openModal();
+                turn = -1;
+        } 
+        if (roundWon) {
+            displayController.setWinMsg(getCurrPlayerSign());
+            displayController.openModal(); 
+            roundWon = false;
+            turn = -1;
         }
     }
 
@@ -158,9 +155,9 @@ const gameController = (() => {
             }
             if (a === b && b === c) {
                 roundWon = true; 
-                displayController.setWinMsg(getCurrPlayerSign());
-                displayController.openModal(); 
-                turn = -1;
+                // displayController.setWinMsg(getCurrPlayerSign());
+                // displayController.openModal(); 
+                // turn = -1;
                 break;
             }
         }  
