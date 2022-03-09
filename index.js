@@ -70,6 +70,10 @@ const displayController = (() => {
         winMsg.innerHTML = `Congrats! ${winningSign} won the game!`;
     }
 
+    const setDrawMsg = () => {
+        winMsg.innerHTML = 'Draw! No one won this game.';
+    } 
+
     const clearUI = () => {
         modal.style.display = "none";
         gameBoard.reset();
@@ -82,7 +86,8 @@ const displayController = (() => {
         setTurnMsg,
         openModal,
         closeModal,
-        setWinMsg
+        setWinMsg,
+        setDrawMsg
     }
 })();
 
@@ -133,6 +138,9 @@ const gameController = (() => {
                 } 
                 else {
                     console.log("It's a draw!");
+                    displayController.setDrawMsg();
+                    displayController.openModal();
+                    turn = -1;
                 }
             }
             turn++;
