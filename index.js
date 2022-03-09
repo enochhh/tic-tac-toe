@@ -74,9 +74,6 @@ const displayController = (() => {
         modal.style.display = "none";
         gameBoard.reset();
         turnMsg.innerHTML = "X's turn";
-        gameController.turn = 0;
-        console.log("Clear UI's turn: ", gameController.turn);
-        console.log("Clear Ui's sign: ", gameController.getCurrPlayerSign());
     }
 
     noBtn.addEventListener("click", closeModal);
@@ -92,6 +89,7 @@ const displayController = (() => {
 const gameController = (() => {
     const playerX = Player('X');
     const playerO = Player('O');
+    let roundWon = false; 
     let turn = 0;
     const winConditions = [
         [0, 1, 2],
@@ -120,12 +118,22 @@ const gameController = (() => {
             e.target.innerHTML = getCurrPlayerSign();
             fieldIdx = e.target.id; 
             gameBoard.markField(fieldIdx, getCurrPlayerSign());
-            if (turn < 8) {
+            if (turn < 8 && !roundWon) {
                 checkWinner();
+                if (roundWon) {
+                    console.log("GAME WON");
+                    roundWon = false; 
+                } 
             }
-            else {
+            else if (turn == 8 && !roundWon) {
                 checkWinner();
-                console.log("it's a draw");
+                if (roundWon) {
+                    console.log("GAME WON");
+                    roundWon = false; 
+                } 
+                else {
+                    console.log("It's a draw!");
+                }
             }
             turn++;
         }
@@ -141,7 +149,7 @@ const gameController = (() => {
                 continue;
             }
             if (a === b && b === c) {
-                console.log("GAME WON");
+                roundWon = true; 
                 displayController.setWinMsg(getCurrPlayerSign());
                 displayController.openModal(); 
                 turn = -1;
@@ -152,8 +160,6 @@ const gameController = (() => {
 
     return {
         displayTurn,
-        getCurrPlayerSign,
-        turn
     }
 })();
 
