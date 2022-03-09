@@ -130,18 +130,17 @@ const gameController = (() => {
 
     const checkRound = (round) => {
         checkWinner();
-        if (round == 8 && !roundWon) {
-            console.log("It's a draw!");
-                displayController.setDrawMsg();
-                displayController.openModal();
-                turn = -1;
-        } 
-        if (roundWon) {
+        if (round <= 8 && roundWon) {
             displayController.setWinMsg(getCurrPlayerSign());
             displayController.openModal(); 
             roundWon = false;
             turn = -1;
         }
+        else if (round == 8 && !roundWon) {
+                displayController.setDrawMsg();
+                displayController.openModal();
+                turn = -1;
+        } 
     }
 
     const checkWinner = () => {
@@ -155,9 +154,6 @@ const gameController = (() => {
             }
             if (a === b && b === c) {
                 roundWon = true; 
-                // displayController.setWinMsg(getCurrPlayerSign());
-                // displayController.openModal(); 
-                // turn = -1;
                 break;
             }
         }  
