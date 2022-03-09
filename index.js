@@ -124,8 +124,8 @@ const gameController = (() => {
             fieldIdx = e.target.id; 
             gameBoard.markField(fieldIdx, getCurrPlayerSign());
             checkRound(turn);
+            turn++;
         }
-        turn++;
     }
 
     const checkRound = (round) => {
